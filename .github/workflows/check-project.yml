@@ -1,0 +1,45 @@
+name: AI Workflow Check
+
+on:
+  # main 브랜치에 push될 때만 실행됩니다.
+  push:
+    branches:
+      - main
+
+jobs:
+  check-project:
+    # GitHub Actions 실행 환경을 지정합니다.
+    runs-on: ubuntu-latest
+
+    steps:
+      # 저장소의 코드를 가져옵니다.
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 실행 로그에 안내 문구를 출력합니다.
+      - name: Print workflow messages
+        run: |
+          echo "코드 수정이 일어났습니다."
+          echo "AI Workflow 자동화가 실행되었습니다."
+          echo "자동 검사 완료"
+
+      # 현재 프로젝트 파일 목록을 출력합니다.
+      - name: List project files
+        run: |
+          echo "현재 프로젝트 파일 목록:"
+          find . -maxdepth 2 -type f | sort
+
+      # 필수 파일이 모두 있는지 확인합니다.
+      # 하나라도 없으면 exit 1로 워크플로우가 실패합니다.
+      - name: Check required files
+        run: |
+          required_files=("index.html" "script.js" "style.css" "README.md")
+
+          for file in "${required_files[@]}"; do
+            if [ ! -f "$file" ]; then
+              echo "필수 파일이 없습니다: $file"
+              exit 1
+            fi
+          done
+
+          echo "모든 필수 파일이 존재합니다."
