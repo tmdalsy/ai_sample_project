@@ -24,5 +24,5 @@ form.addEventListener("submit", function (event) {
     return;
   }
 
-  showMessage("warning", "이름을 먼저 입력해주세요.");
+  showMessage("warning", "이름을 입력한 뒤 다시 시도해주세요.");
 });
